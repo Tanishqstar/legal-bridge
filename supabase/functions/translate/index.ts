@@ -13,7 +13,10 @@ serve(async (req) => {
     const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
     if (!LOVABLE_API_KEY) throw new Error("LOVABLE_API_KEY not configured");
 
-    const targetLanguage = sourceLanguage === "en" ? "es" : "en";
+    // Translate to the other two languages (return primary target)
+    const langMap: Record<string, string> = { en: "English", hi: "Hindi", mr: "Marathi" };
+    const otherLangs = Object.keys(langMap).filter(l => l !== sourceLanguage);
+    const targetLanguage = otherLangs[0]; // primary translation target
 
     const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
       method: "POST",
@@ -26,8 +29,9 @@ serve(async (req) => {
         messages: [
           {
             role: "system",
-            content: `You are a legal translation and intent classification assistant. Given a message in a legal negotiation context:
-1. Translate the text from ${sourceLanguage} to ${targetLanguage}. If the source is already in the target language, provide the same text.
+            content: `You are a legal translation and intent classification assistant. The supported languages are English (en), Hindi (hi), and Marathi (mr).
+Given a message in a legal negotiation context:
+1. Translate the text from ${langMap[sourceLanguage] || sourceLanguage} to ${langMap[targetLanguage] || targetLanguage}. If the source is already in the target language, provide the same text.
 2. Classify the intent as one of: "offer" (proposing terms), "acceptance" (agreeing to terms), or "inquiry" (asking questions or making general statements).
 
 Respond ONLY with valid JSON: {"translation": "...", "intent": "offer|acceptance|inquiry"}`

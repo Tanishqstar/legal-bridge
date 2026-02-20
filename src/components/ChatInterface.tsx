@@ -12,12 +12,8 @@ interface ChatInterfaceProps {
 
 const languageOptions = [
   { code: "en", label: "English" },
-  { code: "es", label: "Español" },
-  { code: "fr", label: "Français" },
-  { code: "de", label: "Deutsch" },
-  { code: "ar", label: "العربية" },
-  { code: "zh", label: "中文" },
-  { code: "ja", label: "日本語" },
+  { code: "hi", label: "हिन्दी" },
+  { code: "mr", label: "मराठी" },
 ];
 
 export function ChatInterface({ messages, currentRole, onSendMessage, isTranslating }: ChatInterfaceProps) {
