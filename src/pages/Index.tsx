@@ -1,4 +1,4 @@
-import { useState, forwardRef } from "react";
+import { useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useSession } from "@/hooks/useSession";
 import { ChatInterface } from "@/components/ChatInterface";
@@ -10,7 +10,7 @@ import { SessionSelector } from "@/components/SessionSelector";
 import { FileText, Copy, Check } from "lucide-react";
 import { motion } from "framer-motion";
 
-const NegotiationDashboard = forwardRef<HTMLDivElement>((_, ref) => {
+const NegotiationDashboard = () => {
   const [sessionId, setSessionId] = useState<string | null>(null);
   const [currentRole, setCurrentRole] = useState<"party_a" | "party_b">("party_a");
   const [showContract, setShowContract] = useState(false);
@@ -187,6 +187,6 @@ const NegotiationDashboard = forwardRef<HTMLDivElement>((_, ref) => {
       )}
     </div>
   );
-});
+};
 
 export default NegotiationDashboard;
