@@ -60,8 +60,12 @@ export function useSession(sessionId: string | null) {
     // Realtime subscriptions
     const msgChannel = supabase
       .channel(`messages-${sessionId}`)
-      .on("postgres_changes", { event: "INSERT", schema: "public", table: "messages", filter: `session_id=eq.${sessionId}` }, (payload) => {
-        setMessages((prev) => [...prev, payload.new as Message]);
+      .on("postgres_changes", { event: "*", schema: "public", table: "messages", filter: `session_id=eq.${sessionId}` }, (payload) => {
+        if (payload.eventType === "INSERT") {
+          setMessages((prev) => [...prev, payload.new as Message]);
+        } else if (payload.eventType === "UPDATE") {
+          setMessages((prev) => prev.map((m) => (m.id === (payload.new as Message).id ? (payload.new as Message) : m)));
+        }
       })
       .subscribe();
 
