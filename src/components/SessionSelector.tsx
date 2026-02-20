@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, forwardRef } from "react";
 import { Scale, ArrowRight } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { motion } from "framer-motion";
@@ -8,7 +8,7 @@ interface SessionSelectorProps {
   onSelectRole: (role: "party_a" | "party_b") => void;
 }
 
-export function SessionSelector({ onSelectSession, onSelectRole }: SessionSelectorProps) {
+export const SessionSelector = forwardRef<HTMLDivElement, SessionSelectorProps>(({ onSelectSession, onSelectRole }, ref) => {
   const [caseName, setCaseName] = useState("");
   const [creating, setCreating] = useState(false);
   const [joinId, setJoinId] = useState("");
@@ -123,4 +123,4 @@ export function SessionSelector({ onSelectSession, onSelectRole }: SessionSelect
       </motion.div>
     </div>
   );
-}
+});
